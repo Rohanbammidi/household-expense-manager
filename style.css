@@ -1,0 +1,276 @@
+
+body {
+    background-color: #f4f6f9;
+    font-family: Arial, sans-serif;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+h2 {
+    font-weight: bold;
+}
+
+/* Charts */
+.chart-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 7px;
+}
+
+/* Mobile responsive design */
+@media (max-width: 576px) {
+
+    .container {
+        margin-top: 15px !important;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .dashboard-header {
+        align-items: flex-start !important;
+    }
+
+    .dashboard-header h2 {
+        font-size: 23px;
+    }
+
+    .header-buttons {
+        width: 100%;
+    }
+
+    .header-buttons .btn {
+        flex: 1;
+        font-size: 13px;
+        padding: 9px 5px;
+    }
+
+    .card {
+        padding: 16px !important;
+        border-radius: 10px;
+    }
+
+    h4 {
+        font-size: 19px;
+    }
+
+    .card h3 {
+        font-size: 23px;
+    }
+
+    .form-control,
+    .form-select {
+        min-height: 44px;
+        font-size: 16px;
+    }
+
+    .btn {
+        min-height: 42px;
+    }
+
+    .dashboard-actions {
+        flex-direction: column;
+    }
+
+    .dashboard-actions .btn {
+        width: 100%;
+    }
+
+    .chart-image {
+        width: 100%;
+    }
+
+    .table {
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+    .action-buttons .btn {
+        margin-bottom: 4px;
+    }
+}
+
+/* Budget page */
+.budget-card {
+    max-width: 600px;
+    width: 100%;
+}
+
+/* Mobile budget page */
+@media (max-width: 576px) {
+
+    .budget-container {
+        margin-top: 20px !important;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .budget-card {
+        padding: 20px !important;
+    }
+
+    .budget-card h2 {
+        font-size: 23px;
+    }
+
+}
+
+/* Edit expense page */
+.edit-card {
+    max-width: 600px;
+    width: 100%;
+}
+
+/* Mobile edit page */
+@media (max-width: 576px) {
+
+    .edit-container {
+        margin-top: 20px !important;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .edit-card {
+        padding: 20px !important;
+    }
+
+    .edit-card h2 {
+        font-size: 23px;
+    }
+
+}
+
+/* Filter results page */
+@media (max-width: 576px) {
+
+    .filter-container {
+        margin-top: 20px !important;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .filter-container .card {
+        padding: 18px !important;
+    }
+
+    .filter-container h2 {
+        font-size: 23px;
+    }
+
+    .filter-container .table {
+        font-size: 13px;
+        white-space: nowrap;
+    }
+
+}
+
+/* Reports page */
+@media (max-width: 576px) {
+
+    .summary-container {
+        margin-top: 20px !important;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .summary-header {
+        align-items: flex-start !important;
+    }
+
+    .summary-header h2 {
+        font-size: 23px;
+    }
+
+    .summary-header .btn {
+        width: 100%;
+    }
+
+    .summary-container .card {
+        padding: 18px !important;
+    }
+
+    .summary-container h4 {
+        font-size: 18px;
+    }
+
+    .summary-container .table {
+        font-size: 13px;
+    }
+
+}
+
+/* Login page */
+.login-card {
+    width: 100%;
+    max-width: 430px;
+    border-radius: 12px;
+}
+
+.login-card h3 {
+    font-size: 23px;
+}
+
+/* Mobile login page */
+@media (max-width: 576px) {
+
+    .login-container {
+        padding: 15px;
+    }
+
+    .login-card {
+        padding: 22px !important;
+    }
+
+    .login-card h3 {
+        font-size: 21px;
+    }
+
+    .login-card .form-control {
+        min-height: 45px;
+        font-size: 16px;
+    }
+
+}
+
+/* Registration page */
+.register-card {
+    width: 100%;
+    max-width: 430px;
+    border-radius: 12px;
+}
+
+.register-card h3 {
+    font-size: 23px;
+}
+
+/* Mobile registration page */
+@media (max-width: 576px) {
+
+    .register-container {
+        padding: 15px;
+    }
+
+    .register-card {
+        padding: 22px !important;
+    }
+
+    .register-card h3 {
+        font-size: 21px;
+    }
+
+    .register-card .form-control {
+        min-height: 45px;
+        font-size: 16px;
+    }
+
+}
+
+
