@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import os
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("SECRET_KEY", "change-this-secret-key-before-deployment")
+app.secret_key = os.environ.get("SECRET_KEY")
 
 
 # Database connection
