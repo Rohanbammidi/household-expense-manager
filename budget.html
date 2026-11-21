@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Set Monthly Budget</title>
+
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="container budget-container mt-5 mb-5">
+
+    <div class="card shadow p-4 mx-auto budget-card">
+
+        <h2 class="text-center mb-4">Set Monthly Budget</h2>
+
+        <form method="POST" action="/budget">
+
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+
+                <select name="category" class="form-select" required>
+                    <option value="">Select Category</option>
+                    <option>Food</option>
+                    <option>Transport</option>
+                    <option>Shopping</option>
+                    <option>Education</option>
+                    <option>Medical</option>
+                    <option>Entertainment</option>
+                    <option>Utilities</option>
+                    <option>Others</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Month</label>
+
+                <input type="month"
+                       name="month"
+                       class="form-control"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Budget Amount (₹)</label>
+
+                <input type="number"
+                       name="budget_amount"
+                       class="form-control"
+                       min="0.01"
+                       step="0.01"
+                       placeholder="Enter budget amount"
+                       required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                Save Budget
+            </button>
+
+        </form>
+
+        <a href="/" class="btn btn-outline-secondary mt-3 w-100">
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

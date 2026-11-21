@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Expense Reports</title>
+
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="container summary-container mt-5 mb-5">
+
+    <!-- HEADER -->
+    <div class="summary-header d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+
+        <h2 class="mb-0">Expense Reports</h2>
+
+        <a href="/" class="btn btn-primary">
+            Back to Dashboard
+        </a>
+
+    </div>
+
+    <!-- MONTHLY REPORT -->
+    <div class="card shadow p-4 mb-4">
+
+        <h4 class="mb-3">Month-wise Expense Report</h4>
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>Month</th>
+                        <th>Total Expenses</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for m in monthly %}
+
+                    <tr>
+                        <td>{{ m['month'] }}</td>
+                        <td>₹{{ "%.2f"|format(m['total']) }}</td>
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            No monthly records available.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- CATEGORY REPORT -->
+    <div class="card shadow p-4">
+
+        <h4 class="mb-3">Category-wise Expense Report</h4>
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>Category</th>
+                        <th>Total Expenses</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for c in categories %}
+
+                    <tr>
+                        <td>{{ c['category'] }}</td>
+                        <td>₹{{ "%.2f"|format(c['total']) }}</td>
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            No category records available.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Login - Household Expense Manager</title>
+
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="bg-light">
+
+<div class="container min-vh-100 d-flex justify-content-center align-items-center login-container">
+
+    <div class="card shadow p-4 login-card">
+
+        <h3 class="text-center mb-2">
+            Household Expense Manager
+        </h3>
+
+        <h5 class="text-center text-muted mb-4">
+            Login
+        </h5>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('login') }}">
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+
+                <input type="email"
+                       name="email"
+                       class="form-control"
+                       placeholder="Enter your email"
+                       autocomplete="email"
+                       required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+
+                <input type="password"
+                       name="password"
+                       class="form-control"
+                       placeholder="Enter your password"
+                       autocomplete="current-password"
+                       required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+                Login
+            </button>
+
+        </form>
+
+        <p class="text-center mt-3 mb-0">
+            Don't have an account?
+            <a href="{{ url_for('register') }}">Register</a>
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>

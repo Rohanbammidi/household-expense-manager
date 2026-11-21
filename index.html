@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Household Expense Manager</title>
+
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .budget-progress {
+            width: var(--progress);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container mt-4 mb-5">
+
+    <!-- HEADER -->
+    <div class="dashboard-header d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+        <div>
+            <h2>Household Expense Manager</h2>
+            <small class="text-muted">Welcome, {{ user_name }}</small>
+        </div>
+
+        <div class="header-buttons d-flex gap-2">
+            <a href="/summary" class="btn btn-outline-primary">View Reports</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">Logout</a>
+        </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- ADD EXPENSE FORM -->
+    <div class="card shadow p-4 mb-4">
+        <h4 class="mb-3">Add New Expense</h4>
+
+        <form method="POST" action="/add">
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Expense Name</label>
+                    <input type="text" name="item_name"
+                    class="form-control"
+                    placeholder="Enter expense name" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Amount (₹)</label>
+                    <input type="number" name="amount"
+                    class="form-control" min="0.01" step="0.01"
+                    placeholder="Enter amount" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Category</label>
+
+                    <select name="category" class="form-select" required>
+                        <option value="">Select Category</option>
+                        <option>Food</option>
+                        <option>Transport</option>
+                        <option>Shopping</option>
+                        <option>Education</option>
+                        <option>Medical</option>
+                        <option>Entertainment</option>
+                        <option>Utilities</option>
+                        <option>Others</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Expense Date</label>
+                    <input type="date" name="expense_date"
+                    class="form-control" required>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Expense</button>
+        </form>
+    </div>
+
+    <!-- DASHBOARD TOTALS -->
+    <h4 class="mb-3">Expense Overview</h4>
+
+    <div class="row">
+
+        <div class="col-md-4 col-12 mb-3">
+            <div class="card shadow p-3 text-center h-100">
+                <h6>Today's Expenses</h6>
+                <h3 class="text-primary">₹{{ "%.2f"|format(today_total) }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-12 mb-3">
+            <div class="card shadow p-3 text-center h-100">
+                <h6>This Month</h6>
+                <h3 class="text-success">₹{{ "%.2f"|format(month_total) }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-12 mb-3">
+            <div class="card shadow p-3 text-center h-100">
+                <h6>This Year</h6>
+                <h3 class="text-danger">₹{{ "%.2f"|format(year_total) }}</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="dashboard-actions d-flex flex-wrap gap-2 mt-3 mb-4">
+        <a href="/budget" class="btn btn-primary">Set Monthly Budget</a>
+        <a href="/summary" class="btn btn-outline-success">View Reports</a>
+    </div>
+
+    <!-- MONTHLY BUDGET OVERVIEW -->
+    <div class="card shadow p-4 mb-4">
+
+        <h4 class="mb-3">Monthly Budget Overview</h4>
+
+        {% if budgets %}
+
+            {% for b in budgets %}
+
+                {% set percentage = (b['spent'] / b['budget_amount'] * 100) if b['budget_amount'] > 0 else 0 %}
+                {% set progress = [percentage, 100] | min %}
+
+                <div class="mb-4">
+
+                    <div class="d-flex justify-content-between flex-wrap gap-1">
+                        <strong>{{ b['category'] }}</strong>
+
+                        <span>
+                            ₹{{ "%.2f"|format(b['spent']) }}
+                            /
+                            ₹{{ "%.2f"|format(b['budget_amount']) }}
+                        </span>
+                    </div>
+
+                    <div class="progress mt-2" style="height: 12px;">
+
+                        <div class="progress-bar budget-progress
+                            {% if percentage >= 100 %}bg-danger
+                            {% elif percentage >= 80 %}bg-warning
+                            {% else %}bg-success{% endif %}"
+                            role="progressbar"
+                            style="--progress: {{ progress }}%;">
+                        </div>
+
+                    </div>
+
+                    <small class="text-muted">
+
+                        {% if percentage >= 100 %}
+                            Budget exceeded by ₹{{ "%.2f"|format(b['spent'] - b['budget_amount']) }}
+
+                        {% elif percentage >= 80 %}
+                            Warning! Only ₹{{ "%.2f"|format(b['budget_amount'] - b['spent']) }} remaining.
+
+                        {% else %}
+                            ₹{{ "%.2f"|format(b['budget_amount'] - b['spent']) }} remaining.
+                        {% endif %}
+
+                    </small>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p class="text-muted text-center">
+                No budgets set for this month.
+                Click Set Monthly Budget to get started.
+            </p>
+
+        {% endif %}
+
+        <a href="/budget" class="btn btn-outline-primary">
+            Set or Update Budget
+        </a>
+
+    </div>
+
+    <!-- CATEGORY-WISE CHART -->
+    <div class="card shadow p-4 mb-4">
+
+        <h4 class="mb-3">Category-wise Expenses</h4>
+
+        {% if chart_exists %}
+
+            <img src="{{ url_for('static', filename='category.png') }}?v={{ range(1, 1000000) | random }}"
+            class="img-fluid chart-image"
+            alt="Category-wise expense chart">
+
+        {% else %}
+
+            <p class="text-muted text-center">
+                No expenses available for this month.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+    <!-- MONTHLY TREND CHART -->
+    <div class="card shadow p-4 mb-4">
+
+        <h4 class="mb-3">Monthly Expense Trend</h4>
+
+        {% if monthly %}
+
+            <img src="{{ url_for('static', filename='monthly.png') }}?v={{ range(1, 1000000) | random }}"
+            class="img-fluid chart-image"
+            alt="Monthly expense trend chart">
+
+        {% else %}
+
+            <p class="text-muted text-center">
+                No monthly expense data available.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+    <!-- FILTER EXPENSES -->
+    <div class="card shadow p-4 mb-4">
+
+        <h4 class="mb-3">Filter Expenses</h4>
+
+        <form method="GET" action="/filter">
+
+            <div class="row">
+
+                <div class="col-md-5 mb-3">
+                    <label class="form-label">Start Date</label>
+                    <input type="date" name="start"
+                    class="form-control" required>
+                </div>
+
+                <div class="col-md-5 mb-3">
+                    <label class="form-label">End Date</label>
+                    <input type="date" name="end"
+                    class="form-control" required>
+                </div>
+
+                <div class="col-md-2 mb-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-success w-100">
+                        Filter
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- RECENT EXPENSES TABLE -->
+    <div class="card shadow p-4">
+
+        <h4 class="mb-3">Recent Transactions</h4>
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Expense</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for e in expenses %}
+
+                    <tr>
+                        <td>{{ e['expense_date'] }}</td>
+                        <td>{{ e['item_name'] }}</td>
+                        <td>{{ e['category'] }}</td>
+                        <td>₹{{ "%.2f"|format(e['amount']) }}</td>
+
+                        <td class="action-buttons">
+
+                            <a href="/edit/{{ e['id'] }}"
+                            class="btn btn-sm btn-warning">Edit</a>
+
+                            <a href="/delete/{{ e['id'] }}"
+                            class="btn btn-sm btn-danger"
+                            onclick="return confirm('Are you sure you want to delete this expense?')">
+                                Delete
+                            </a>
+
+                        </td>
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            No expenses recorded yet.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
